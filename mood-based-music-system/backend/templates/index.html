@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOON Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>MOON</h1>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="nav-btn active" data-target="home-view"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="#" class="nav-btn" data-target="search-view"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
+                <li><a href="#" class="nav-btn" data-target="mood-view"><i class="fa-solid fa-face-smile"></i> Mood Match</a></li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-btn" data-target="profile-view"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="#" class="nav-btn" data-target="settings-view"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                    <li><a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Nav Container -->
+            <header class="top-nav glass-nav">
+                <div class="nav-history">
+                    <button class="icon-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="icon-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="user-badge">
+                    <img src="https://ui-avatars.com/api/?name={{ user }}&background=8a2be2&color=fff" alt="User">
+                    <span>{{ user }}</span>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                
+                <!-- HOME VIEW -->
+                <div id="home-view" class="view active">
+                    <h2>Good Evening</h2>
+                    <div class="song-grid" id="home-songs">
+                        <!-- Songs populated by JS -->
+                    </div>
+
+                    <h2 class="mt-4">Trending Now</h2>
+                    <div class="song-grid" id="trending-songs">
+                        <!-- Songs populated by JS -->
+                    </div>
+                </div>
+
+                <!-- SEARCH VIEW -->
+                <div id="search-view" class="view hidden">
+                    <div class="search-bar-container">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="What do you want to listen to?">
+                    </div>
+                    <h3 class="mt-4">Browse all</h3>
+                    <div class="genre-grid">
+                        <div class="genre-card" style="background: linear-gradient(135deg, #8a2be2, #4b0082);">Pop</div>
+                        <div class="genre-card" style="background: linear-gradient(135deg, #ff007f, #8a2be2);">Hip-Hop</div>
+                        <div class="genre-card" style="background: linear-gradient(135deg, #00b4d8, #0077b6);">Chill</div>
+                        <div class="genre-card" style="background: linear-gradient(135deg, #ffb703, #fb8500);">Indie</div>
+                    </div>
+                    <div id="search-results-container" class="mt-4 hidden">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 id="search-results-title">Search Results</h3>
+                            <button id="clear-search" class="icon-btn" title="Clear Search"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="song-grid" id="search-results">
+                            <!-- Search results populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MOOD MATCH VIEW -->
+                <div id="mood-view" class="view hidden">
+                    <div class="mood-header">
+                        <h2>Mood Matcher</h2>
+                        <p>Let MOON detect your emotion and play the perfect track.</p>
+                    </div>
+                    
+                    <div class="webcam-container glass">
+                        <div class="webcam-frame" id="webcam-mock">
+                            <i class="fa-solid fa-camera fa-3x mb-2"></i>
+                            <p>Webcam Access</p>
+                        </div>
+                        <div class="mood-controls">
+                            <button id="detect-mood-btn" class="primary-btn">Detect My Mood</button>
+                            <div class="detected-emotion mt-3" id="emotion-display">
+                                <h3>Emotion: <span class="highlight">Unknown</span></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="language-selection mt-4">
+                        <h4>Select Language Preference:</h4>
+                        <div class="lang-btns" id="language-selector">
+                            <button class="lang-btn active" data-lang="english">English</button>
+                            <button class="lang-btn" data-lang="hindi">Hindi</button>
+                            <button class="lang-btn" data-lang="punjabi">Punjabi</button>
+                            <button class="lang-btn" data-lang="haryanvi">Haryanvi</button>
+                            <button class="lang-btn" data-lang="bollywood">Bollywood</button>
+                        </div>
+                    </div>
+
+                    <h3 class="mt-4">Recommended for You</h3>
+                    <div class="song-grid" id="mood-songs">
+                        <!-- Mood songs populated here -->
+                        <div class="empty-state">Scan your face to see recommendations.</div>
+                    </div>
+                </div>
+
+                <!-- PROFILE VIEW -->
+                <div id="profile-view" class="view hidden">
+                    <div class="profile-header glass">
+                        <img src="https://ui-avatars.com/api/?name={{ user }}&background=8a2be2&color=fff&size=150" alt="Avatar" class="profile-avatar">
+                        <div class="profile-info">
+                            <p>Profile</p>
+                            <h1>{{ user }}</h1>
+                            <p>12 Playlists • 142 Followers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS VIEW -->
+                <div id="settings-view" class="view hidden">
+                    <h2>Settings</h2>
+                    <div class="settings-list glass p-4 mt-3">
+                        <div class="setting-item">
+                            <span>Audio Quality</span>
+                            <select class="dark-select"><option>High</option><option>Normal</option></select>
+                        </div>
+                        <hr class="dark-hr">
+                        <div class="setting-item">
+                            <span>Dark Mode</span>
+                            <input type="checkbox" checked disabled>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Bottom Player -->
+    <footer class="music-player glass-player">
+        <div class="player-left">
+            <img id="current-cover" src="/static/covers/cover1.jpg" alt="Cover" class="current-cover hidden">
+            <div class="current-info">
+                <div id="current-title" class="song-title">Select a song</div>
+                <div id="current-artist" class="song-artist"></div>
+            </div>
+            <button class="icon-btn heart-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+
+        <div class="player-center">
+            <div class="player-controls">
+                <button class="icon-btn" id="prev-btn"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="play-btn" id="play-pause-btn"><i class="fa-solid fa-play"></i></button>
+                <button class="icon-btn" id="next-btn"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar-bg" id="progress-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <span id="total-time">0:30</span>
+            </div>
+        </div>
+
+        <div class="player-right">
+            <i class="fa-solid fa-volume-high"></i>
+            <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="80">
+            <button class="expand-btn ml-3" id="expand-player-btn"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></button>
+        </div>
+    </footer>
+
+    <!-- Apple Music Style Immersive Player Overlay -->
+    <div id="full-player" class="full-player-overlay hidden">
+        <button class="close-player" id="close-player-btn"><i class="fa-solid fa-chevron-down"></i></button>
+        
+        <div class="premium-player-container apple-style">
+            <!-- Centered: Visuals & Controls -->
+            <div class="player-main-side">
+                <div class="visual-header hero-layout">
+                    <img id="full-cover" src="/static/covers/cover1.jpg" alt="Current Song" class="premium-full-cover apple-hero-art">
+                    <div class="premium-player-info centered-info">
+                        <h1 id="full-title">Song Title</h1>
+                        <h2 id="full-artist">Artist Name</h2>
+                    </div>
+                </div>
+
+                <div id="spotify-embed-container" class="spotify-embed-container hero-spotify hidden">
+                    <!-- Spotify Iframe -->
+                </div>
+
+                <div class="premium-controls-box centered-controls">
+                    <div class="full-progress-container">
+                        <span id="full-current-time">0:00</span>
+                        <div class="full-progress-bg" id="full-progress-bg">
+                            <div class="full-progress-fill" id="full-progress-fill"></div>
+                        </div>
+                        <span id="full-total-time">0:30</span>
+                    </div>
+                    
+                    <div class="premium-main-btns apple-btns">
+                        <button class="premium-control-btn"><i class="fa-solid fa-shuffle"></i></button>
+                        <button class="premium-control-btn" id="full-prev-btn"><i class="fa-solid fa-backward-step"></i></button>
+                        <button class="premium-play-btn" id="full-play-pause-btn"><i class="fa-solid fa-play"></i></button>
+                        <button class="premium-control-btn" id="full-next-btn"><i class="fa-solid fa-forward-step"></i></button>
+                        <button class="premium-control-btn"><i class="fa-solid fa-repeat"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="main-audio"></audio>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

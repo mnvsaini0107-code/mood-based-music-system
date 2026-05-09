@@ -1,0 +1,9 @@
+flask
+flask-cors
+pandas
+deepface
+opencv-python
+tensorflow
+numpy
+spotipy
+python-dotenv

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOON Music - Spotify Clone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🌙</span>
+                    <span class="logo-text">MOON</span>
+                </div>
+                <button class="user-profile" id="userProfileBtn">
+                    <img src="https://picsum.photos/32" alt="User" class="user-avatar">
+                    <span class="user-name">User</span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="home">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h6V3h-6v18zM6 13h2v-2H6v2zm0 4h2v-2H6v2z"/>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-page="search">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5c0 1.29.46 2.47 1.28 3.31l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6.01-4.5c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-2.24-5-5z"/>
+                    </svg>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item" data-page="library">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 6H2v14h20V6H4zm16-4v2h2v-2h-2zm0 4v2h2v-2h-2zm0 4v2h2v-2h-2zm0 4v2h2v-2h-2z"/>
+                    </svg>
+                    <span>Your Library</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" data-page="create-playlist">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13H5v-2h14v2z"/>
+                        <path d="M19 9H5V7h14v2z"/>
+                        <path d="M19 17H5v-2h14v2z"/>
+                    </svg>
+                    <span>Create Playlist</span>
+                </a>
+                <a href="#" class="nav-item" data-page="liked">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5C22 5.42 18.6 2.5 14.5 2.5z"/>
+                        <path d="M12 7.08c-2.55 0-4.63 2.06-4.63 4.63 0 2.55 2.06 4.63 4.63 4.63 2.55 0 4.63-2.06 4.63-4.63 0-2.55-2.06-4.63-4.63z"/>
+                    </svg>
+                    <span>Liked Songs</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" data-page="mood">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41 1.41L10 14.17V7h2v8.17l3.59-3.58L15 17l-5 5z"/>
+                    </svg>
+                    <span>Mood Detection</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Home Page -->
+            <div class="page" id="homePage">
+                <div class="content-header">
+                    <h1>Good Evening</h1>
+                </div>
+                
+                <!-- Recently Played -->
+                <section class="content-section">
+                    <h2 class="section-title">Recently Played</h2>
+                    <div class="album-grid" id="recentlyPlayedGrid"></div>
+                </section>
+                
+                <!-- Trending Songs -->
+                <section class="content-section">
+                    <h2 class="section-title">Trending Now</h2>
+                    <div class="album-grid" id="trendingGrid"></div>
+                </section>
+                
+                <!-- Recommended Albums -->
+                <section class="content-section">
+                    <h2 class="section-title">Recommended Albums</h2>
+                    <div class="album-grid" id="recommendedGrid"></div>
+                </section>
+                
+                <!-- Playlist Cards -->
+                <section class="content-section">
+                    <h2 class="section-title">Your Playlists</h2>
+                    <div class="playlist-grid" id="playlistGrid"></div>
+                </section>
+            </div>
+
+            <!-- Search Page -->
+            <div class="page hidden" id="searchPage">
+                <div class="search-container">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5c0 1.29.46 2.47 1.28 3.31l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6.01-4.5c0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5-2.24-5-5z"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="What do you want to listen to?" id="searchInput">
+                    </div>
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Mood Detection Page -->
+            <div class="page hidden" id="moodPage">
+                <div class="mood-container">
+                    <div class="mood-header">
+                        <h1>Mood Detection</h1>
+                        <p>Let AI detect your mood and recommend perfect music</p>
+                    </div>
+                    
+                    <div class="camera-section">
+                        <div class="camera-container">
+                            <video id="cameraPreview" class="camera-preview" autoplay muted></video>
+                            <div class="camera-overlay" id="cameraOverlay">
+                                <div class="camera-icon">📷</div>
+                                <p class="camera-text">Click Start Detection to begin</p>
+                            </div>
+                        </div>
+                        
+                        <div class="emotion-display">
+                            <div class="emotion-label">Detected Emotion:</div>
+                            <div class="emotion-value" id="detectedEmotion">—</div>
+                        </div>
+                        
+                        <div class="mood-controls">
+                            <button class="btn-primary" id="startDetection">Start Detection</button>
+                            <button class="btn-secondary" id="stopDetection">Stop Detection</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mood-songs">
+                        <h2 class="section-title">Recommended Songs</h2>
+                        <div class="album-grid" id="moodSongsGrid"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bottom Music Player -->
+    <footer class="music-player" id="musicPlayer">
+        <div class="player-content">
+            <!-- Album Art -->
+            <div class="player-album">
+                <img src="https://picsum.photos/60" alt="Album" class="player-album-img" id="playerAlbumImg">
+                <div class="album-overlay">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="white">
+                        <path d="M8 5v14l11-3 11-3 11-3 11-3s-2.8-2.8-2.8z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Song Info -->
+            <div class="player-info">
+                <div class="song-title" id="playerSongTitle">No song playing</div>
+                <div class="song-artist" id="playerSongArtist">—</div>
+            </div>
+            
+            <!-- Player Controls -->
+            <div class="player-controls">
+                <button class="control-btn" id="prevBtn" title="Previous">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 6h2v2H2c0 1.1.9 2 2-.6.2-.6z"/>
+                    </svg>
+                </button>
+                
+                <button class="play-btn" id="playPauseBtn" title="Play/Pause">
+                    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-3 11-3 11-3 11-3s-2.8-2.8-2.8z"/>
+                    </svg>
+                    <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                
+                <button class="control-btn" id="nextBtn" title="Next">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 18l6 6 6 6z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <span class="time-label" id="currentTime">0:00</span>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <span class="time-label" id="totalTime">0:00</span>
+            </div>
+            
+            <!-- Volume & Extras -->
+            <div class="player-extras">
+                <button class="control-btn" id="shuffleBtn" title="Shuffle">🔀</button>
+                <button class="control-btn" id="repeatBtn" title="Repeat">🔁</button>
+                <div class="volume-control">
+                    <svg class="volume-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9v6zm13.5 3c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-6c0-.83-.67-1.5-1.5-1.5z"/>
+                    </svg>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audioPlayer"></audio>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

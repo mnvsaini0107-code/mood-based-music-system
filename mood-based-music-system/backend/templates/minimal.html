@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MOON Music</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h1>🌙 MOON</h1>
+        <ul>
+            <li>Home</li>
+            <li>Search</li>
+            <li>Your Library</li>
+            <li>Liked Songs</li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <h2>Recommended Songs</h2>
+        <div id="songContainer" class="song-grid"></div>
+    </div>
+
+    <!-- MUSIC PLAYER -->
+    <div class="player">
+        <img id="playerCover">
+        <div class="song-info">
+            <h3 id="playerTitle">No song playing</h3>
+            <p id="playerArtist"></p>
+        </div>
+        <button onclick="playPause()">▶</button>
+        <input type="range" id="progress">
+    </div>
+
+    <audio id="audioPlayer"></audio>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
